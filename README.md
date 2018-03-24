@@ -1,2 +1,2 @@
-#js_functions
-Collection of custom javascript functions for various purposes.
+# Firma
+An web-based bookeeping application i.e. "cloud" ...
