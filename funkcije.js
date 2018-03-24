@@ -4,6 +4,7 @@ function serialization(phpdoc,forma,choice,elemName){
 	Forth one is an id of an element where ajax response from server you want to be displayed.
 	It works on these input types: checkbox, radio, text, number, textarea and email.
 	Word of caution: If there's a radio button/s on page, one of them need to have attribute checked.
+	Use following line in php file ' print_r(json_decode(json_encode($_GET),true)); ' w/o quotes.
 	*/
 	var formax = forma;
 	
