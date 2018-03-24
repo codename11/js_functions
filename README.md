@@ -1,2 +1,2 @@
 # Firma
-An web-based bookeeping application i.e. "cloud" ...
+Collection of custom javascript functions for various purposes.
