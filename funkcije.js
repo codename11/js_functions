@@ -1,3 +1,48 @@
+
+$(document).ready(function(){
+		
+	//If you want submit a form on a click.
+	$("#btn1").click(function(){//Click on element type button id="btn1" to make ajax call.
+		event.preventDefault();
+		$.ajax({
+			type: "GET",//POST or GET
+			url: "pr2.php",//Where data to send.
+			contentType: "text/html",//Regular html format
+			data: $("#forma1").serialize(),//For displaying use this: print_r($_GET);
+			//data: JSON.stringify($("#forma1").serialize()),//Serialization of form. echo(json_encode($_GET));//Should use this if it's jquery ajax json string.
+			//contentType:"application/json;charset=utf-8", //If you want json data type.
+		   success: function (result) {//If succesfull 
+				 $("#raport").text(result);//Display in div with id=raport.
+		   },
+		   error: function () {//In case of an error
+				alert("Error!!!");
+		   }
+		});
+	});
+	
+	//If you want to submit a form using event handler.
+	$("#forma1").submit(function(event){
+		event.preventDefault();//Use this if you want your fields to stay populated after submition.
+
+		$.ajax({
+			url: "pr2.php",//Where data to send.
+			type: "GET",//POST or GET
+			contentType: "text/html",//Regular html format
+			data: $("#forma1").serialize(),//For displaying use this: print_r($_GET);
+			//data: JSON.stringify($("#forma1").serialize()),//Serialization of form. //print_r($_GET);//Should use this if it's jquery ajax ordinary string.
+			//contentType: "application/json;charset=utf-8", //If you want json data type.
+			success:function(result){
+				$("#raport").text(result);//Display in div with id=raport.
+			},
+			error: function () {//In case of an error
+				alert("Error!!!");
+			}
+
+		});
+	});
+	
+});
+
 function serialization(phpdoc,forma,choice,elemName){
 	/*First argument is where data is sent to, second is keyword 'this', third is boolean value. 
 	If it's false, it is sent as ordinary formated AJAX string. If it's true, it is sent as json string.
@@ -6,7 +51,19 @@ function serialization(phpdoc,forma,choice,elemName){
 	Word of caution: If there's a radio button/s on page, one of them need to have attribute checked.
 	Warning for select-one: If value attribute is not provided(ommited) in option sub-tag, it's text i.e innerHTML is used as value. 
 	If value attribute is provided, but doesn't have any 'value' i.e an empty string "", it will become an value. 
-	Use following line in php file ' print_r(json_decode(json_encode($_GET),true)); ' w/o quotes.
+	Use following line in php file to handle output:  
+	
+	if(isset($_GET)){
+		
+		if(isset($_GET["jason"])){
+			echo(json_decode(json_encode($_GET["jason"]),true)); 
+		}
+		else{
+			print_r($_GET);
+		}
+			
+	}  
+	Same is applicable if you use $_POST.
 	Crucial thing is distinction between types being sought. While text, number and similar may be easy to sort out,
 	checkboxes and radio buttons need to be checked if they're present AND hold value. 
 	Also need to be taken into consideration is that radio buttons absolutly HAVE TO default value when page is loaded. 
