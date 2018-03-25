@@ -2,26 +2,31 @@ function serialization(phpdoc,forma,choice,elemName){
 	/*First argument is where data is sent to, second is keyword 'this', third is boolean value. 
 	If it's false, it is sent as ordinary formated AJAX string. If it's true, it is sent as json string.
 	Forth one is an id of an element where ajax response from server you want to be displayed.
-	It works on these input types: checkbox, radio, text, number, textarea and email.
+	It works on these input types: checkbox, radio, text, number, textarea, password, select-one(select) and email.
 	Word of caution: If there's a radio button/s on page, one of them need to have attribute checked.
+	Warning for select-one: If value attribute is not provided(ommited) in option sub-tag, it's text i.e innerHTML is used as value. 
+	If value attribute is provided, but doesn't have any 'value' i.e an empty string "", it will become an value. 
 	Use following line in php file ' print_r(json_decode(json_encode($_GET),true)); ' w/o quotes.
+	Crucial thing is distinction between types being sought. While text, number and similar may be easy to sort out,
+	checkboxes and radio buttons need to be checked if they're present AND hold value. 
+	Also need to be taken into consideration is that radio buttons absolutly HAVE TO default value when page is loaded. 
 	*/
-	var formax = forma;
+	var formax = forma;//Getting form object.
 	
-	var obj = {
+	var obj = {//Creating JS object with arrays as values that will contan names and values of input fields.
 			"name" : [],
 			"value" : []
 		};
 
-	var Wboard = document.getElementById(elemName);
-	var name = "";
-	var val = "";
-	var doc = phpdoc+"?"
-	var str = "";
-	var i = 0;
+	var Wboard = document.getElementById(elemName);//Getting element where we want to display response from server.
+	var name = "";//String variable for temorary storage of names of input fields.
+	var val = "";//String variable for temorary storage of values of input fields.
+	var doc = phpdoc+"?"//String variable which will be later added to string with names and values gathered from form elements. Then it will be sent with standard ajax request. To used this, third parameter when function is called needs to be boolean false.
+	var str = "";//String variable that contains string together with path to php file that has being sent with standard ajax.
+	var i = 0;//Integer used as a counter in loops inside this function.
 
-	var net = formax.querySelectorAll("#"+formax.id+" [name]");
-	var len = net.length;
+	var net = formax.querySelectorAll("#"+formax.id+" [name]");//Gathering of all elements inside a forma with cetain id. Elements are found by it's distinctive names.
+	var len = net.length;//A length of sorts of how many elements are found inside a form.
 
 	while(i<len) {
 
@@ -61,7 +66,7 @@ function serialization(phpdoc,forma,choice,elemName){
 	});
 	
 	str = "";//Resseting string and adding elements wthout duplicates.
-	for(var i=0;i<resLen;i++){//Iterating through array, separating names from values by determined coordinates of equal sign. Names and values are then appended to string and to JS object. 
+	for(i=0;i<resLen;i++){//Iterating through array, separating names from values by determined coordinates of equal sign. Names and values are then appended to string and to JS object. 
 		
 		if(res[i]!==undefined){
 			str += res[i];//Appending filtered names and values.
@@ -92,13 +97,13 @@ function serialization(phpdoc,forma,choice,elemName){
 		 
 	};
 	
-	if(choice===false){
+	if(choice===false){//Sending a standard ajax string.
 		xhttp.open("GET", str, false);	
 		xhttp.send();
 		document.getElementById("str").innerHTML = str;
 	}
 		
-	if(choice===true){
+	if(choice===true){//Sending json formated string.
 		xhttp.open("GET", doc+"jason="+jason,true);
 		xhttp.setRequestHeader("Content-Type", "application/json");
 		xhttp.send();
