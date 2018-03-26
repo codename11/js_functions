@@ -117,7 +117,7 @@ function serialization(phpdoc,forma,choice,elemName){
 	}
 
 	var res = str.split("&");//Splitting string to array to remove duplicates.
-	var resLen = res.length-1;//Length of said array.
+	var resLen = res.length;//Length of said array.
 	res = res.filter(function(elem, index, self) {//Duplicate filtration.
 		return index === self.indexOf(elem);
 	});
@@ -157,7 +157,6 @@ function serialization(phpdoc,forma,choice,elemName){
 	if(choice===false){//Sending a standard ajax string.
 		xhttp.open("GET", str, false);	
 		xhttp.send();
-		document.getElementById("str").innerHTML = str;
 	}
 		
 	if(choice===true){//Sending json formated string.
