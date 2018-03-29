@@ -43,14 +43,15 @@ $(document).ready(function(){
 	
 });
 
-function serialization(phpdoc,forma,choice,elemName){
+function serialization(phpdoc,forma,choice,elemName,req){
 	/*First argument is where data is sent to, second is keyword 'this', third is boolean value. 
 	If it's false, it is sent as ordinary formated AJAX string. If it's true, it is sent as json string.
 	Forth one is an id of an element where ajax response from server you want to be displayed.
+	Fifth is type of request, either POST or GET. 
 	It works on these input types: checkbox, radio, text, number, textarea, password, select-one(select) and email.
 	Word of caution: If there's a radio button/s on page, one of them need to have attribute checked.
 	Warning for select-one: If value attribute is not provided(ommited) in option sub-tag, it's text i.e innerHTML is used as value. 
-	If value attribute is provided, but doesn't have any 'value' i.e an empty string "", it will become an value. 
+	If value attribute is provided, but doesn't have any 'value' i.e an empty string "", IT will become an value. 
 	Use following line in php file to handle output:  
 	
 	if(isset($_GET)){
@@ -68,6 +69,7 @@ function serialization(phpdoc,forma,choice,elemName){
 	checkboxes and radio buttons need to be checked if they're present AND hold value. 
 	Also need to be taken into consideration is that radio buttons absolutly HAVE TO default value when page is loaded. 
 	*/
+	req = req.toUpperCase();
 	var formax = forma;//Getting form object.
 	
 	var obj = {//Creating JS object with arrays as values that will contan names and values of input fields.
@@ -155,12 +157,12 @@ function serialization(phpdoc,forma,choice,elemName){
 	};
 	
 	if(choice===false){//Sending a standard ajax string.
-		xhttp.open("GET", str, false);	
+		xhttp.open(req, str, false);	
 		xhttp.send();
 	}
 		
 	if(choice===true){//Sending json formated string.
-		xhttp.open("GET", doc+"jason="+jason,true);
+		xhttp.open(req, doc+"jason="+jason,true);
 		xhttp.setRequestHeader("Content-Type", "application/json");
 		xhttp.send();
 
