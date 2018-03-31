@@ -140,6 +140,12 @@ function serialization(phpdoc,forma,choice,elemName,req){
 		
 	}
 	
+	var strLen = str.length;
+	if(str.substring(strLen-1,strLen)=="&"){
+
+		str = str.substring(0,strLen-1);
+	}
+	
 	var jason = JSON.stringify(obj);//Parsing previously said object to json string.
 	str = encodeURI(doc+str);//Creating string suitable for sending it with ordinary ajax request.
 	str1 = str;
